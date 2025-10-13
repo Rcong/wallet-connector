@@ -1,2 +1,2 @@
 # wallet-connector
-wallet--connector
+wallet--connector。
