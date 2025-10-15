@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { WalletModalProps } from '../types';
+import type { WalletModalProps } from '../types';
 import { X, AlertCircle } from 'lucide-react';
 import WalletButton from './WalletButton';
 

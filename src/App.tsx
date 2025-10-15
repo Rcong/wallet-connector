@@ -1,9 +1,42 @@
 import { useState, useEffect } from 'react';
+import { WalletProvider } from './sdk/providers/WalletProvider';
 import ConnectButton from './sdk/components/ConnectButton';
 import { metaMaskWallet } from './sdk/connectors/metamask';
 // import { getSigner, getAddress, getBalance } from './sdk';
 
 const wallets = [metaMaskWallet];
+
+// Define supported chains
+const chains = [
+  {
+    id: 1,
+    name: 'Ethereum',
+    rpcUrl: 'https://eth-mainnet.g.alchemy.com/v2/your-api-key',
+    currency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    blockExplorer: {
+      name: 'Etherscan',
+      url: 'https://etherscan.io',
+    },
+  },
+  {
+    id: 11155111,
+    name: 'Sepolia',
+    rpcUrl: 'https://sepolia.infura.io/v3/d8ed0bd1de8242d998a1405b6932ab33',
+    currency: {
+      name: 'Sepolia Ether',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    blockExplorer: {
+      name: 'Etherscan',
+      url: 'https://sepolia.etherscan.io',
+    },
+  },
+];
 
 function App() {
   const [address, setAddress] = useState<string | null>(null);
@@ -49,37 +82,39 @@ function App() {
   }, [signer]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center font-sans">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md text-center">
-        <h1 className="text-4xl font-bold mb-6 text-teal-400">Wallet Connector SDK</h1>
-        
-        {!address ? (
-          // <button 
-          //   onClick={connectWallet}
-          //   className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
-          // >
-          //   Connect Wallet
-          // </button>
-          <ConnectButton 
-            onConnect={handleConnect}
-            onDisconnect={handleDisconnect}
-            onChainSwitch={handleChainSwitch}
-            onBalanceChange={handleBalanceChange}
-          />
-        ) : (
-          <div className="space-y-4">
-            <div className="bg-gray-700 p-4 rounded-lg">
-              <p className="text-sm text-gray-400">Connected Address:</p>
-              <p className="text-lg font-mono break-all">{address}</p>
+    <WalletProvider chains={chains} wallets={wallets}>
+      <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center font-sans">
+        <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+          <h1 className="text-4xl font-bold mb-6 text-teal-400">Wallet Connector SDK</h1>
+          
+          {!address ? (
+            // <button 
+            //   onClick={connectWallet}
+            //   className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+            // >
+            //   Connect Wallet
+            // </button>
+            <ConnectButton 
+              onConnect={handleConnect}
+              onDisconnect={handleDisconnect}
+              onChainSwitch={handleChainSwitch}
+              onBalanceChange={handleBalanceChange}
+            />
+          ) : (
+            <div className="space-y-4">
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-sm text-gray-400">Connected Address:</p>
+                <p className="text-lg font-mono break-all">{address}</p>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-sm text-gray-400">Balance:</p>
+                <p className="text-2xl font-bold text-teal-400">{balance ? `${parseFloat(balance).toFixed(4)} ETH` : 'Loading...'}</p>
+              </div>
             </div>
-            <div className="bg-gray-700 p-4 rounded-lg">
-              <p className="text-sm text-gray-400">Balance:</p>
-              <p className="text-2xl font-bold text-teal-400">{balance ? `${parseFloat(balance).toFixed(4)} ETH` : 'Loading...'}</p>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </WalletProvider>
   );
 }
 

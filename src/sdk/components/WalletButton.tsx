@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wallet } from '../types';
+import type { Wallet } from '../types';
 import { ExternalLink, Download } from 'lucide-react';
 import { 
   MetaMaskIcon, 

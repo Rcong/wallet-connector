@@ -6,7 +6,7 @@ import type {
   Wallet
 } from '../types';
 import { getStorageItem, setStorageItem } from '../utils';
-// import WalletModal from '../components/WalletModal';
+import WalletModal from '../components/WalletModal';
 import { BrowserProvider } from 'ethers'
 
 // Create context with default values
@@ -236,14 +236,14 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({
   return (
     <WalletContext.Provider value={value}>
       {children}
-      {/* <WalletModal
+      <WalletModal
         isOpen={isModalOpen}
         onClose={closeModal}
         wallets={wallets}
         onSelectWallet={connect}
         connecting={state.isConnecting}
         error={state.error}
-      /> */}
+      />
     </WalletContext.Provider>
   );
 };
